@@ -13,6 +13,7 @@
 		66B8536F25DD8E39007EBB79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66B8536D25DD8E39007EBB79 /* Main.storyboard */; };
 		66B8537125DD8E3B007EBB79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66B8537025DD8E3B007EBB79 /* Assets.xcassets */; };
 		66B8537425DD8E3B007EBB79 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66B8537225DD8E3B007EBB79 /* LaunchScreen.storyboard */; };
+		66B8537E25DD954F007EBB79 /* FilmList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B8537D25DD954F007EBB79 /* FilmList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		66B8537025DD8E3B007EBB79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		66B8537325DD8E3B007EBB79 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		66B8537525DD8E3B007EBB79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		66B8537D25DD954F007EBB79 /* FilmList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		66B8536625DD8E39007EBB79 /* MoviesCatalog */ = {
 			isa = PBXGroup;
 			children = (
+				66B8537C25DD94EE007EBB79 /* Controller */,
 				66B8536725DD8E39007EBB79 /* AppDelegate.swift */,
 				66B8536925DD8E39007EBB79 /* SceneDelegate.swift */,
 				66B8536B25DD8E39007EBB79 /* ViewController.swift */,
@@ -65,6 +68,14 @@
 				66B8537525DD8E3B007EBB79 /* Info.plist */,
 			);
 			path = MoviesCatalog;
+			sourceTree = "<group>";
+		};
+		66B8537C25DD94EE007EBB79 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				66B8537D25DD954F007EBB79 /* FilmList.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66B8536C25DD8E39007EBB79 /* ViewController.swift in Sources */,
+				66B8537E25DD954F007EBB79 /* FilmList.swift in Sources */,
 				66B8536825DD8E39007EBB79 /* AppDelegate.swift in Sources */,
 				66B8536A25DD8E39007EBB79 /* SceneDelegate.swift in Sources */,
 			);
