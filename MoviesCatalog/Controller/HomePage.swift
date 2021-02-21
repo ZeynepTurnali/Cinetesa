@@ -17,7 +17,9 @@ class HomePage: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.rowHeight = 200
+        tableView.rowHeight = 230
+        
+        navigationItem.title = "Movie Catalog"
     }
     
     
@@ -25,19 +27,50 @@ class HomePage: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return categories[section]
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 50))
+        
+        let label = UILabel()
+        label.frame = CGRect.init(x: 5, y: 5, width: headerView.frame.width-10, height: headerView.frame.height-10)
+        label.text = categories[section]
+        label.font = UIFont (name: "HelveticaNeue-Thin", size: 20)
+        label.textColor = UIColor.white
+        headerView.addSubview(label)
+        
+        return headerView
     }
-
+    
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return categories.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellOne", for: indexPath) as? CategoriesTableViewCell {
+        Collection.chosenSection = indexPath.section
+        if Collection.chosenSection == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellOne", for: indexPath) as! CategoriesTableViewCell
+            
+            cell.didSelectItemAction = { [weak self] indexPath in
+                self?.performSegue(withIdentifier: "pushData", sender: self)
+                Collection.bridge = Collection.firstSection
+            }
             return cell
-        } else if let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellTwo", for: indexPath) as? CategoriesTableViewCell {
+        } else if Collection.chosenSection == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellTwo", for: indexPath) as! CategoriesTableViewCell
+           
+            cell.didSelectItemAction = { [weak self] indexPath in
+                self?.performSegue(withIdentifier: "pushData", sender: self)
+                Collection.bridge = Collection.secondSection
+            }
             return cell
-        } else if let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellThree", for: indexPath) as? CategoriesTableViewCell {
+        } else if Collection.chosenSection == 2 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellThree", for: indexPath) as! CategoriesTableViewCell
+            
+            cell.didSelectItemAction = { [weak self] indexPath in
+                self?.performSegue(withIdentifier: "pushData", sender: self)
+                Collection.bridge = Collection.thirdSection
+            }
             return cell
         }
         return UITableViewCell()
@@ -45,18 +78,6 @@ class HomePage: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20
     }
-    
 
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

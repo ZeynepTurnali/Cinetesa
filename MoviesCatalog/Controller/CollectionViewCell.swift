@@ -7,6 +7,5 @@ import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var filmImage: UIImageView!
-    
+    @IBOutlet weak var filmImage: LazyImageView!
 }
