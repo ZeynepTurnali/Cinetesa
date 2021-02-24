@@ -7,5 +7,5 @@ target 'MoviesCatalog' do
 
   # Pods for MoviesCatalog
 	pod 'Alamofire'
-
+	pod 'SwiftyGif'
 end

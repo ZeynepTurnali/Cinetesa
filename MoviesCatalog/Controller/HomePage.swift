@@ -9,7 +9,7 @@ class HomePage: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var categories = ["Action", "Drama", "Science Fiction"]
+    var categories = ["Crime", "Adventure", "Science Fiction"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +19,8 @@ class HomePage: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         tableView.rowHeight = 230
         
-        navigationItem.title = "Movie Catalog"
+        navigationItem.title = "🎬 Cinetesa"
+        navigationItem.backButtonTitle = ""
     }
     
     

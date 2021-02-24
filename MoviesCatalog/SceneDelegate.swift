@@ -1,9 +1,7 @@
 //
 //  SceneDelegate.swift
 //  MoviesCatalog
-//
-//  Created by testinium on 17.02.2021.
-//
+
 
 import UIKit
 

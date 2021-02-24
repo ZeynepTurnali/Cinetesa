@@ -21,7 +21,7 @@ class CategoriesTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
     var selectedSection = 0
     
     var detail = DetailPage()
-    var firstPageNumber = 1
+    var baseImageUrl = URL(string: "https://image.tmdb.org/t/p/w500")
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,19 +29,17 @@ class CategoriesTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        DataStore.getFilmsByGenresAndPages(page: 1, genreId: 80) { movies in
+        DataStore.getFilmsByGenresAndPages(pagination: true, page: 1, genreId: Sections.crime.rawValue) { movies in
             Collection.firstSection = movies
             self.firstSection = movies
         }
         
-        
-        DataStore.getFilmsByGenresAndPages(page: 1, genreId: 12) { movies in
+        DataStore.getFilmsByGenresAndPages(pagination: true, page: 1, genreId: Sections.adventure.rawValue) { movies in
             Collection.secondSection = movies
             self.secondSection = movies
         }
         
-        
-        DataStore.getFilmsByGenresAndPages(page: 2, genreId: 80) { movies in
+        DataStore.getFilmsByGenresAndPages(pagination: true, page: 1, genreId: Sections.scienceFiction.rawValue) { movies in
             Collection.thirdSection = movies
             self.thirdSection = movies
         }
@@ -49,7 +47,6 @@ class CategoriesTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
-        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -57,16 +54,16 @@ class CategoriesTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 0 {
-            count = firstSection!.count * firstPageNumber
+            count = firstSection!.count * Collection.scrollFirst
         } else if collectionView.tag == 1 {
-            count = secondSection!.count
+            count = secondSection!.count * Collection.scrollSecond
         } else if collectionView.tag == 2 {
-            count = thirdSection!.count
+            count = thirdSection!.count * Collection.scrollThird
         } else {
             count = 0
         }
@@ -75,32 +72,32 @@ class CategoriesTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let firstItem = firstSection![indexPath.row]
-        let first_imageUrl = URL(string: "https://image.tmdb.org/t/p/w500" + "\(firstItem.posterPath)")!
-      //  let first_data = try? Data(contentsOf: first_imageUrl.asURL())
-        
-        let secondItem = secondSection![indexPath.row]
-        let second_imageUrl = URL(string: "https://image.tmdb.org/t/p/w500" + "\(secondItem.posterPath)")!
-      //  let second_data = try? Data(contentsOf: second_imageUrl.asURL())
-        
-        let thirdItem = thirdSection![indexPath.row]
-        let third_imageUrl = URL(string: "https://image.tmdb.org/t/p/w500" + "\(thirdItem.posterPath)")!
-      //  let third_data = try? Data(contentsOf: third_imageUrl.asURL())
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! CollectionViewCell
+        
+        let firstItem = Collection.firstSection![indexPath.row % Collection.firstSection!.count]
+        let first_imageUrl = URL(string: "https://image.tmdb.org/t/p/w500" + "\(firstItem.posterPath)")!
         if collectionView.tag == 0 {
             cell.filmImage.loadImage(fromURL: first_imageUrl, placeHolderImage: "lazyLoadingImage")
-           // cell.filmImage.image = UIImage(data: first_data!)
-        } else if collectionView.tag == 1 {
-           // cell.filmImage.image = UIImage(data: second_data!)
+        }
+        
+        let secondItem = Collection.secondSection![indexPath.row % Collection.secondSection!.count]
+        let second_imageUrl = URL(string: "https://image.tmdb.org/t/p/w500" + "\(secondItem.posterPath)")!
+        if collectionView.tag == 1 {
             cell.filmImage.loadImage(fromURL: second_imageUrl, placeHolderImage: "lazyLoadingImage")
-        } else if collectionView.tag == 2 {
+        }
+        
+        let thirdItem = Collection.thirdSection![indexPath.row % Collection.thirdSection!.count]
+        let third_imageUrl = URL(string: "https://image.tmdb.org/t/p/w500" + "\(thirdItem.posterPath)")!
+        if collectionView.tag == 2 {
             cell.filmImage.loadImage(fromURL: third_imageUrl, placeHolderImage: "lazyLoadingImage")
-          // cell.filmImage.image = UIImage(data: third_data!)
         }
         
         return cell
     }
+    
+    
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         let itemsPerRow:CGFloat = 4
@@ -117,12 +114,32 @@ class CategoriesTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.x
+        
         if position > collectionView.contentSize.width - scrollView.frame.size.width - 20 {
-            print("called")
-            DataStore.getFilmsByGenresAndPages(page: firstPageNumber + 1, genreId: 80) { movies in
-                Collection.firstSection = movies
-                self.firstSection = self.firstSection! + movies
-                self.firstPageNumber += 1
+            guard !DataStore.isPaginating else {
+                // already called
+                return
+            }
+            // sleep(3)
+            if collectionView.tag == 0 {
+                DataStore.getFilmsByGenresAndPages(pagination: true, page: Collection.scrollFirst + 1, genreId: Sections.crime.rawValue) { movies in
+                    Collection.scrollFirst += 1
+                    self.firstSection = self.firstSection! + movies
+                    Collection.firstSection = self.firstSection
+                    
+                }
+            } else if collectionView.tag == 1 {
+                DataStore.getFilmsByGenresAndPages(pagination: true, page: Collection.scrollSecond + 1, genreId: Sections.adventure.rawValue) { movies in
+                    Collection.scrollSecond += 1
+                    self.secondSection = self.secondSection! + movies
+                    Collection.secondSection = self.secondSection
+                }
+            } else if collectionView.tag == 2 {
+                DataStore.getFilmsByGenresAndPages(pagination: true, page: Collection.scrollThird + 1, genreId: Sections.scienceFiction.rawValue) { movies in
+                    Collection.scrollThird += 1
+                    self.thirdSection = self.thirdSection! + movies
+                    Collection.thirdSection = self.thirdSection
+                }
             }
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -130,19 +147,7 @@ class CategoriesTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
         }
     }
     
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//            let pageFloat = (scrollView.contentOffset.x / scrollView.frame.size.width)
-//            let pageInt = Int(round(pageFloat))
-//
-//            switch pageInt {
-//            case 0:
-//                collectionView.scrollToItem(at: [0, 20], at: .left, animated: false)
-//            case firstSection!.count - 1:
-//                collectionView.scrollToItem(at: [0, 1], at: .left, animated: false)
-//            default:
-//                break
-//            }
-//        }
+    
 }
 
 

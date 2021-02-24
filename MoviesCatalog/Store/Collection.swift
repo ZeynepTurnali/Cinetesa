@@ -14,4 +14,8 @@ struct Collection {
     
     static var chosenSection = 0
     static var chosenMember = 0
+    
+    static var scrollFirst = 1
+    static var scrollSecond = 1
+    static var scrollThird = 1
 }

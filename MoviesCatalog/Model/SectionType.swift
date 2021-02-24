@@ -5,8 +5,8 @@
 
 import Foundation
 
-enum Sections: String {
-    case dram = "1"
-    case action = "2"
-    case horror = "3"
+enum Sections: Int {
+    case crime = 80
+    case adventure = 12
+    case scienceFiction = 878
 }
