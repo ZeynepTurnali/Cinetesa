@@ -21,6 +21,7 @@ class HomePage: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         navigationItem.title = "🎬 Cinetesa"
         navigationItem.backButtonTitle = ""
+        
     }
     
     
@@ -49,28 +50,31 @@ class HomePage: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         Collection.chosenSection = indexPath.section
-        if Collection.chosenSection == 0 {
+        if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellOne", for: indexPath) as! CategoriesTableViewCell
             
-            cell.didSelectItemAction = { [weak self] indexPath in
-                self?.performSegue(withIdentifier: "pushData", sender: self)
-                Collection.bridge = Collection.firstSection
-            }
-            return cell
-        } else if Collection.chosenSection == 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellTwo", for: indexPath) as! CategoriesTableViewCell
-           
-            cell.didSelectItemAction = { [weak self] indexPath in
-                self?.performSegue(withIdentifier: "pushData", sender: self)
-                Collection.bridge = Collection.secondSection
-            }
-            return cell
-        } else if Collection.chosenSection == 2 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellThree", for: indexPath) as! CategoriesTableViewCell
+           // Collection.bridge = Collection.firstSection
             
             cell.didSelectItemAction = { [weak self] indexPath in
                 self?.performSegue(withIdentifier: "pushData", sender: self)
-                Collection.bridge = Collection.thirdSection
+            }
+            return cell
+        } else if indexPath.section == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellTwo", for: indexPath) as! CategoriesTableViewCell
+           
+           // Collection.bridge = Collection.secondSection
+            
+            cell.didSelectItemAction = { [weak self] indexPath in
+                self?.performSegue(withIdentifier: "pushData", sender: self)
+            }
+            return cell
+        } else if indexPath.section == 2 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellThree", for: indexPath) as! CategoriesTableViewCell
+            
+           // Collection.bridge = Collection.thirdSection
+            
+            cell.didSelectItemAction = { [weak self] indexPath in
+                self?.performSegue(withIdentifier: "pushData", sender: self)
             }
             return cell
         }

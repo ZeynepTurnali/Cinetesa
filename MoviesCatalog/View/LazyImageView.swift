@@ -34,6 +34,7 @@ class LazyImageView: UIImageView {
                         let path = NSTemporaryDirectory().appending(UUID().uuidString)
                         let url = URL(fileURLWithPath: path)
                         
+                      //  print(url)
                         let data = image.jpegData(compressionQuality: 0.5)
                         try? data?.write(to: url)
                         

@@ -23,7 +23,7 @@ class SplashScreen: UIViewController, SwiftyGifDelegate {
     }
     
     func gifDidStop(sender: UIImageView) {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "homePage")
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "navigation")
         self.view.window?.rootViewController = vc
     }
     

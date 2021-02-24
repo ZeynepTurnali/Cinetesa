@@ -20,9 +20,6 @@ class CategoriesTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
     var thirdSection: [Result]? = []
     var selectedSection = 0
     
-    var detail = DetailPage()
-    var baseImageUrl = URL(string: "https://image.tmdb.org/t/p/w500")
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -109,6 +106,14 @@ class CategoriesTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         Collection.chosenMember = indexPath.row
+        
+        if collectionView.tag == 0 {
+            Collection.bridge = Collection.firstSection
+        } else if collectionView.tag == 1 {
+            Collection.bridge = Collection.secondSection
+        } else if collectionView.tag == 2 {
+            Collection.bridge = Collection.thirdSection
+        }
         didSelectItemAction?(indexPath)
     }
     
